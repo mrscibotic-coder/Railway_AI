@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Railway AI Inspection System</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+
+  margin: 0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:
+    #080d16;
+
+  color:
+    #ffffff;
+
+  min-height:
+    100vh;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+
+  background:
+    linear-gradient(
+      135deg,
+      #111c30,
+      #0d1525
+    );
+
+  border-bottom:
+    1px solid #26344d;
+
+  padding:
+    22px 28px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    20px;
+
+  flex-wrap:
+    wrap;
+}
+
+.header-left h1 {
+
+  margin:
+    0;
+
+  font-size:
+    28px;
+
+  letter-spacing:
+    0.3px;
+}
+
+.header-left p {
+
+  margin:
+    7px 0 0;
+
+  color:
+    #93a4bc;
+
+  font-size:
+    14px;
+}
+
+.system-indicator {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  padding:
+    10px 15px;
+
+  border-radius:
+    30px;
+
+  background:
+    #152238;
+
+  border:
+    1px solid #2a3a54;
+
+  font-size:
+    14px;
+}
+
+.system-dot {
+
+  width:
+    10px;
+
+  height:
+    10px;
+
+  border-radius:
+    50%;
+
+  background:
+    #22c55e;
+
+  box-shadow:
+    0 0 10px
+    rgba(34,197,94,0.7);
+}
+
+/* =====================================================
+   EMERGENCY TOP BANNER
+===================================================== */
+
+.emergency-banner {
+
+  display:
+    none;
+
+  width:
+    100%;
+
+  padding:
+    16px 20px;
+
+  background:
+    #7f1d1d;
+
+  border-bottom:
+    2px solid #ef4444;
+
+  text-align:
+    center;
+
+  animation:
+    emergencyFlash 0.9s infinite;
+}
+
+.emergency-banner.active {
+
+  display:
+    block;
+}
+
+.emergency-banner-title {
+
+  font-size:
+    22px;
+
+  font-weight:
+    bold;
+
+  letter-spacing:
+    1px;
+}
+
+.emergency-banner-text {
+
+  margin-top:
+    5px;
+
+  font-size:
+    14px;
+
+  color:
+    #fecaca;
+}
+
+@keyframes emergencyFlash {
+
+  0%, 100% {
+    background:
+      #7f1d1d;
+  }
+
+  50% {
+    background:
+      #b91c1c;
+  }
+
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container {
+
+  max-width:
+    1400px;
+
+  margin:
+    auto;
+
+  padding:
+    22px;
+}
+
+/* =====================================================
+   STATUS CARDS
+===================================================== */
+
+.status-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    14px;
+
+  margin-bottom:
+    20px;
+}
+
+.status-card {
+
+  background:
+    #101a2b;
+
+  border:
+    1px solid #26354e;
+
+  border-radius:
+    12px;
+
+  padding:
+    15px 17px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+}
+
+.status-label {
+
+  color:
+    #8fa0b8;
+
+  font-size:
+    13px;
+}
+
+.status-value {
+
+  margin-top:
+    5px;
+
+  font-weight:
+    bold;
+
+  font-size:
+    16px;
+}
+
+/* =====================================================
+   MAIN GRID
+===================================================== */
+
+.main-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1.8fr 1fr;
+
+  gap:
+    20px;
+}
+
+.card {
+
+  background:
+    #101a2b;
+
+  border:
+    1px solid #26354e;
+
+  border-radius:
+    15px;
+
+  padding:
+    18px;
+
+  box-shadow:
+    0 10px 35px
+    rgba(0,0,0,0.18);
+}
+
+.card-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  margin-bottom:
+    15px;
+}
+
+.card-title h2 {
+
+  margin:
+    0;
+
+  font-size:
+    19px;
+}
+
+.live-badge {
+
+  padding:
+    5px 9px;
+
+  border-radius:
+    6px;
+
+  background:
+    #3b1111;
+
+  color:
+    #ff7070;
+
+  font-size:
+    11px;
+
+  font-weight:
+    bold;
+
+  letter-spacing:
+    1px;
+}
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+.camera-box {
+
+  width:
+    100%;
+
+  background:
+    #000;
+
+  border-radius:
+    11px;
+
+  overflow:
+    hidden;
+
+  position:
+    relative;
+
+  border:
+    1px solid #202b3d;
+}
+
+.camera-box img {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  height:
+    auto;
+
+  min-height:
+    320px;
+
+  object-fit:
+    contain;
+
+  background:
+    #000;
+}
+
+.camera-overlay {
+
+  position:
+    absolute;
+
+  top:
+    12px;
+
+  left:
+    12px;
+
+  padding:
+    7px 11px;
+
+  background:
+    rgba(0,0,0,0.7);
+
+  border-radius:
+    7px;
+
+  font-size:
+    12px;
+}
+
+.camera-footer {
+
+  margin-top:
+    12px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  flex-wrap:
+    wrap;
+}
+
+.camera-info {
+
+  color:
+    #8494aa;
+
+  font-size:
+    13px;
+}
+
+button {
+
+  border:
+    none;
+
+  border-radius:
+    8px;
+
+  padding:
+    11px 17px;
+
+  background:
+    #2563eb;
+
+  color:
+    white;
+
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
+
+  transition:
+    0.2s;
+}
+
+button:hover {
+
+  background:
+    #1d4ed8;
+
+  transform:
+    translateY(-1px);
+}
+
+.ack-button {
+
+  background:
+    #dc2626;
+}
+
+.ack-button:hover {
+
+  background:
+    #b91c1c;
+}
+
+/* =====================================================
+   AI RESULT
+===================================================== */
+
+.result-panel {
+
+  text-align:
+    center;
+
+  padding:
+    10px 0 20px;
+}
+
+.result-small {
+
+  color:
+    #8292a9;
+
+  font-size:
+    13px;
+}
+
+.result-name {
+
+  font-size:
+    34px;
+
+  font-weight:
+    800;
+
+  margin:
+    10px 0 5px;
+
+  letter-spacing:
+    0.5px;
+}
+
+.result-confidence {
+
+  color:
+    #aab6c8;
+
+  font-size:
+    15px;
+}
+
+/* =====================================================
+   CONDITION BOX
+===================================================== */
+
+.condition-box {
+
+  margin:
+    12px 0 20px;
+
+  padding:
+    14px;
+
+  border-radius:
+    10px;
+
+  background:
+    #162237;
+
+  border:
+    1px solid #2a3a54;
+
+  text-align:
+    center;
+}
+
+.condition-title {
+
+  color:
+    #8393aa;
+
+  font-size:
+    12px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    1px;
+}
+
+.condition-text {
+
+  margin-top:
+    6px;
+
+  font-size:
+    15px;
+
+  font-weight:
+    bold;
+}
+
+/* =====================================================
+   PROBABILITY
+===================================================== */
+
+.probability {
+
+  margin-top:
+    10px;
+}
+
+.prob-row {
+
+  margin:
+    15px 0;
+}
+
+.prob-head {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  margin-bottom:
+    6px;
+
+  color:
+    #c6d0df;
+
+  font-size:
+    13px;
+}
+
+.bar {
+
+  height:
+    9px;
+
+  background:
+    #26344b;
+
+  border-radius:
+    20px;
+
+  overflow:
+    hidden;
+}
+
+.fill {
+
+  height:
+    100%;
+
+  width:
+    0%;
+
+  background:
+    #3b82f6;
+
+  transition:
+    width 0.3s ease;
+}
+
+/* =====================================================
+   AI STATUS
+===================================================== */
+
+.model-status {
+
+  margin-top:
+    18px;
+
+  padding:
+    11px 13px;
+
+  background:
+    #162237;
+
+  border-radius:
+    8px;
+
+  color:
+    #9eacc0;
+
+  font-size:
+    13px;
+}
+
+/* =====================================================
+   DEBUG
+===================================================== */
+
+.debug {
+
+  margin-top:
+    12px;
+
+  padding:
+    11px;
+
+  background:
+    #070c14;
+
+  border:
+    1px solid #182337;
+
+  border-radius:
+    8px;
+
+  color:
+    #718199;
+
+  font-family:
+    monospace;
+
+  font-size:
+    11px;
+
+  white-space:
+    pre-wrap;
+}
+
+/* =====================================================
+   MANUAL TEST
+===================================================== */
+
+.manual-card {
+
+  margin-top:
+    20px;
+}
+
+.upload {
+
+  width:
+    100%;
+
+  padding:
+    12px;
+
+  border:
+    1px dashed #35445e;
+
+  border-radius:
+    8px;
+
+  background:
+    #0c1422;
+
+  color:
+    #aab6c8;
+}
+
+/* =====================================================
+   EMERGENCY MODAL
+===================================================== */
+
+.modal {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  background:
+    rgba(0,0,0,0.82);
+
+  display:
+    none;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  z-index:
+    9999;
+
+  padding:
+    20px;
+}
+
+.modal.show {
+
+  display:
+    flex;
+}
+
+.alert-box {
+
+  width:
+    min(520px, 100%);
+
+  background:
+    #171c27;
+
+  border:
+    2px solid #ef4444;
+
+  border-radius:
+    16px;
+
+  padding:
+    30px;
+
+  text-align:
+    center;
+
+  box-shadow:
+    0 0 60px
+    rgba(239,68,68,0.35);
+
+  animation:
+    alertPulse 1s infinite;
+}
+
+@keyframes alertPulse {
+
+  0%, 100% {
+    box-shadow:
+      0 0 30px
+      rgba(239,68,68,0.25);
+  }
+
+  50% {
+    box-shadow:
+      0 0 65px
+      rgba(239,68,68,0.55);
+  }
+
+}
+
+.alert-icon {
+
+  font-size:
+    55px;
+
+  margin-bottom:
+    10px;
+}
+
+.alert-title {
+
+  font-size:
+    29px;
+
+  font-weight:
+    800;
+
+  color:
+    #ff5555;
+
+  margin-bottom:
+    10px;
+}
+
+.alert-condition {
+
+  font-size:
+    19px;
+
+  font-weight:
+    bold;
+
+  margin-bottom:
+    8px;
+}
+
+.alert-message {
+
+  color:
+    #b8c2d0;
+
+  line-height:
+    1.6;
+
+  font-size:
+    14px;
+
+  margin-bottom:
+    22px;
+}
+
+.alert-time {
+
+  color:
+    #7f8da3;
+
+  font-size:
+    12px;
+
+  margin-bottom:
+    18px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1000px) {
+
+  .main-grid {
+
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+@media(max-width:700px) {
+
+  .status-grid {
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .header-left h1 {
+
+    font-size:
+      22px;
+  }
+
+  .container {
+
+    padding:
+      13px;
+  }
+
+  .camera-box img {
+
+    min-height:
+      220px;
+  }
+
+}
+
+</style>
+
+<!-- =====================================================
+     LOCAL AI LIBRARIES
+===================================================== -->
+
+<script src="./libs/tf.min.js"></script>
+
+<script src="./libs/teachablemachine-image.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     EMERGENCY BANNER
+===================================================== -->
+
+<div
+  id="emergencyBanner"
+  class="emergency-banner"
+>
+
+  <div class="emergency-banner-title">
+    🚨 EMERGENCY RAILWAY CONDITION DETECTED
+  </div>
+
+  <div
+    id="emergencyBannerText"
+    class="emergency-banner-text"
+  >
+    Immediate inspection required
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+  <div class="header-left">
+
+    <h1>
+      🚆 Railway AI Inspection System
+    </h1>
+
+    <p>
+      ESP32-CAM • Teachable Machine • Real-Time Track Monitoring
+    </p>
+
+  </div>
+
+  <div class="system-indicator">
+
+    <div
+      id="systemDot"
+      class="system-dot"
+    ></div>
+
+    <span id="systemText">
+      SYSTEM READY
+    </span>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container">
+
+
+  <!-- STATUS -->
+
+  <div class="status-grid">
+
+    <div class="status-card">
+
+      <div>
+
+        <div class="status-label">
+          ESP32-CAM Wi-Fi
+        </div>
+
+        <div
+          class="status-value"
+          id="wifiStatus"
+        >
+          CHECKING...
+        </div>
+
+      </div>
+
+      <div>📡</div>
+
+    </div>
+
+
+    <div class="status-card">
+
+      <div>
+
+        <div class="status-label">
+          Camera Stream
+        </div>
+
+        <div
+          class="status-value"
+          id="cameraStatus"
+        >
+          CHECKING...
+        </div>
+
+      </div>
+
+      <div>📷</div>
+
+    </div>
+
+
+    <div class="status-card">
+
+      <div>
+
+        <div class="status-label">
+          AI Model
+        </div>
+
+        <div
+          class="status-value"
+          id="aiStatus"
+        >
+          LOADING...
+        </div>
+
+      </div>
+
+      <div>🤖</div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MAIN GRID -->
+
+  <div class="main-grid">
+
+
+    <!-- CAMERA -->
+
+    <div class="card">
+
+      <div class="card-title">
+
+        <h2>
+          Live Railway Camera
+        </h2>
+
+        <div class="live-badge">
+          ● LIVE
+        </div>
+
+      </div>
+
+
+      <div class="camera-box">
+
+        <img
+          id="liveStream"
+          src=""
+          alt="ESP32-CAM Live Stream"
+        >
+
+        <div class="camera-overlay">
+          ESP32-CAM • LIVE MONITORING
+        </div>
+
+      </div>
+
+
+      <div class="camera-footer">
+
+        <div
+          class="camera-info"
+          id="cameraInfo"
+        >
+          Waiting for ESP32-CAM...
+        </div>
+
+        <button
+          onclick="connectCamera()"
+        >
+          Connect Camera
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- AI -->
+
+    <div class="card">
+
+      <div class="card-title">
+
+        <h2>
+          AI Inspection
+        </h2>
+
+      </div>
+
+
+      <div class="result-panel">
+
+        <div class="result-small">
+          CURRENT CONDITION
+        </div>
+
+        <div
+          id="resultName"
+          class="result-name"
+        >
+          WAITING
+        </div>
+
+        <div
+          id="confidence"
+          class="result-confidence"
+        >
+          0% confidence
+        </div>
+
+      </div>
+
+
+      <div class="condition-box">
+
+        <div class="condition-title">
+          Safety Status
+        </div>
+
+        <div
+          id="conditionText"
+          class="condition-text"
+        >
+          Waiting for inspection
+        </div>
+
+      </div>
+
+
+      <!-- GOOD -->
+
+      <div class="probability">
+
+        <div class="prob-row">
+
+          <div class="prob-head">
+
+            <span>
+              GOOD
+            </span>
+
+            <span id="goodValue">
+              0%
+            </span>
+
+          </div>
+
+          <div class="bar">
+
+            <div
+              class="fill"
+              id="goodBar"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CRACK -->
+
+        <div class="prob-row">
+
+          <div class="prob-head">
+
+            <span>
+              CRACK-GAP
+            </span>
+
+            <span id="crackValue">
+              0%
+            </span>
+
+          </div>
+
+          <div class="bar">
+
+            <div
+              class="fill"
+              id="crackBar"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- MISPLACED -->
+
+        <div class="prob-row">
+
+          <div class="prob-head">
+
+            <span>
+              MISPLACED
+            </span>
+
+            <span id="misplacedValue">
+              0%
+            </span>
+
+          </div>
+
+          <div class="bar">
+
+            <div
+              class="fill"
+              id="misplacedBar"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="modelStatus"
+        class="model-status"
+      >
+        Loading AI model...
+      </div>
+
+
+      <div
+        id="debug"
+        class="debug"
+      >
+        Starting system...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- MANUAL TEST -->
+
+  <div class="card manual-card">
+
+    <div class="card-title">
+
+      <h2>
+        Manual Image Test
+      </h2>
+
+    </div>
+
+    <input
+      class="upload"
+      type="file"
+      id="imageInput"
+      accept="image/*"
+    >
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     EMERGENCY MODAL
+===================================================== -->
+
+<div
+  id="alertModal"
+  class="modal"
+>
+
+  <div class="alert-box">
+
+    <div class="alert-icon">
+      🚨
+    </div>
+
+    <div
+      id="alertTitle"
+      class="alert-title"
+    >
+      EMERGENCY ALERT
+    </div>
+
+    <div
+      id="alertCondition"
+      class="alert-condition"
+    >
+      ABNORMAL CONDITION
+    </div>
+
+    <div
+      id="alertMessage"
+      class="alert-message"
+    >
+      Immediate inspection required.
+    </div>
+
+    <div
+      id="alertTime"
+      class="alert-time"
+    >
+      Detection time
+    </div>
+
+    <button
+      class="ack-button"
+      onclick="acknowledgeAlert()"
+    >
+      ACKNOWLEDGE ALERT
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+// =====================================================
+// ESP32 CONFIGURATION
+// =====================================================
+
+const ESP32_IP =
+  "http://192.168.4.1";
+
+const STREAM_URL =
+  ESP32_IP + ":81/stream";
+
+const CAPTURE_URL =
+  ESP32_IP + "/capture";
+
+const MODEL_URL =
+  "./model/model.json";
+
+const METADATA_URL =
+  "./model/metadata.json";
+
+
+// =====================================================
+// VARIABLES
+// =====================================================
+
+let model = null;
+
+let predictionRunning =
+  false;
+
+let cameraConnected =
+  false;
+
+let abnormalState =
+  false;
+
+let currentAlert =
+  "";
+
+let alertAcknowledged =
+  false;
+
+let alertAudioContext =
+  null;
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const liveStream =
+  document.getElementById(
+    "liveStream"
+  );
+
+const wifiStatus =
+  document.getElementById(
+    "wifiStatus"
+  );
+
+const cameraStatus =
+  document.getElementById(
+    "cameraStatus"
+  );
+
+const aiStatus =
+  document.getElementById(
+    "aiStatus"
+  );
+
+const resultName =
+  document.getElementById(
+    "resultName"
+  );
+
+const confidence =
+  document.getElementById(
+    "confidence"
+  );
+
+const modelStatus =
+  document.getElementById(
+    "modelStatus"
+  );
+
+const debug =
+  document.getElementById(
+    "debug"
+  );
+
+const conditionText =
+  document.getElementById(
+    "conditionText"
+  );
+
+const emergencyBanner =
+  document.getElementById(
+    "emergencyBanner"
+  );
+
+const emergencyBannerText =
+  document.getElementById(
+    "emergencyBannerText"
+  );
+
+const alertModal =
+  document.getElementById(
+    "alertModal"
+  );
+
+const alertTitle =
+  document.getElementById(
+    "alertTitle"
+  );
+
+const alertCondition =
+  document.getElementById(
+    "alertCondition"
+  );
+
+const alertMessage =
+  document.getElementById(
+    "alertMessage"
+  );
+
+const alertTime =
+  document.getElementById(
+    "alertTime"
+  );
+
+const systemText =
+  document.getElementById(
+    "systemText"
+  );
+
+const systemDot =
+  document.getElementById(
+    "systemDot"
+  );
+
+
+// =====================================================
+// DEBUG
+// =====================================================
+
+function log(message) {
+
+  debug.textContent =
+    message;
+
+}
+
+
+// =====================================================
+// LOAD AI MODEL
+// =====================================================
+
+async function loadModel() {
+
+  try {
+
+    log(
+      "Loading TensorFlow.js..."
+    );
+
+    if (
+      typeof tf ===
+      "undefined"
+    ) {
+
+      throw new Error(
+        "TensorFlow.js did not load."
+      );
+
+    }
+
+    log(
+      "TensorFlow.js loaded.\n" +
+      "Loading Teachable Machine..."
+    );
+
+    if (
+      typeof tmImage ===
+      "undefined"
+    ) {
+
+      throw new Error(
+        "Teachable Machine library did not load."
+      );
+
+    }
+
+    model =
+      await tmImage.load(
+        MODEL_URL,
+        METADATA_URL
+      );
+
+    const classes =
+      model.getClassLabels();
+
+    modelStatus.textContent =
+      "AI model loaded successfully";
+
+    aiStatus.textContent =
+      "READY";
+
+    log(
+      "AI model loaded successfully.\n\n" +
+      "Classes:\n" +
+      classes.join("\n")
+    );
+
+  }
+
+  catch(error) {
+
+    aiStatus.textContent =
+      "ERROR";
+
+    modelStatus.textContent =
+      "AI model failed";
+
+    log(
+      "AI ERROR:\n\n" +
+      error.message
+    );
+
+    console.error(error);
+
+  }
+
+}
+
+
+// =====================================================
+// CONNECT CAMERA
+// =====================================================
+
+function connectCamera() {
+
+  log(
+    "Connecting to ESP32-CAM..."
+  );
+
+  wifiStatus.textContent =
+    "CONNECTING";
+
+  cameraStatus.textContent =
+    "CONNECTING";
+
+  cameraInfo.textContent =
+    "Connecting to 192.168.4.1...";
+
+  liveStream.src =
+    STREAM_URL +
+    "?t=" +
+    Date.now();
+
+}
+
+
+// =====================================================
+// STREAM CONNECTED
+// =====================================================
+
+liveStream.onload =
+  function() {
+
+    cameraConnected =
+      true;
+
+    wifiStatus.textContent =
+      "CONNECTED";
+
+    cameraStatus.textContent =
+      "LIVE";
+
+    cameraInfo.textContent =
+      "ESP32-CAM live monitoring active";
+
+    systemText.textContent =
+      "SYSTEM MONITORING";
+
+    systemDot.style.background =
+      "#22c55e";
+
+    log(
+      "ESP32-CAM live stream connected.\n\n" +
+      "Continuous AI inspection active."
+    );
+
+    startAI();
+
+  };
+
+
+// =====================================================
+// STREAM ERROR
+// =====================================================
+
+liveStream.onerror =
+  function() {
+
+    cameraConnected =
+      false;
+
+    wifiStatus.textContent =
+      "NOT CONNECTED";
+
+    cameraStatus.textContent =
+      "ERROR";
+
+    cameraInfo.textContent =
+      "ESP32-CAM connection unavailable";
+
+    systemText.textContent =
+      "CAMERA OFFLINE";
+
+    systemDot.style.background =
+      "#ef4444";
+
+    log(
+      "Unable to connect to ESP32-CAM.\n\n" +
+      "Connect to RAIL_INSPECTION Wi-Fi."
+    );
+
+  };
+
+
+// =====================================================
+// GET CAMERA FRAME
+// =====================================================
+
+async function getCameraFrame() {
+
+  const response =
+    await fetch(
+      CAPTURE_URL +
+      "?t=" +
+      Date.now(),
+      {
+        method:
+          "GET",
+
+        cache:
+          "no-store"
+      }
+    );
+
+  if (!response.ok) {
+
+    throw new Error(
+      "ESP32 capture HTTP " +
+      response.status
+    );
+
+  }
+
+  return await response.blob();
+
+}
+
+
+// =====================================================
+// ANALYZE FRAME
+// =====================================================
+
+async function analyzeFrame() {
+
+  if (!model)
+    return;
+
+  try {
+
+    const blob =
+      await getCameraFrame();
+
+    const image =
+      new Image();
+
+    const objectURL =
+      URL.createObjectURL(
+        blob
+      );
+
+    image.src =
+      objectURL;
+
+    await new Promise(
+      (resolve, reject) => {
+
+        image.onload =
+          resolve;
+
+        image.onerror =
+          reject;
+
+      }
+    );
+
+    const prediction =
+      await model.predict(
+        image
+      );
+
+    URL.revokeObjectURL(
+      objectURL
+    );
+
+    let best =
+      prediction[0];
+
+    for (
+      let i = 1;
+      i < prediction.length;
+      i++
+    ) {
+
+      if (
+        prediction[i]
+          .probability >
+        best.probability
+      ) {
+
+        best =
+          prediction[i];
+
+      }
+
+    }
+
+    updateResult(
+      prediction,
+      best
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "AI frame error:",
+      error
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// UPDATE RESULT
+// =====================================================
+
+function updateResult(
+  prediction,
+  best
+) {
+
+  const percentage =
+    best.probability *
+    100;
+
+  const name =
+    best.className
+      .toUpperCase();
+
+  resultName.textContent =
+    best.className;
+
+  confidence.textContent =
+    percentage.toFixed(1) +
+    "% confidence";
+
+
+  let good =
+    0;
+
+  let crack =
+    0;
+
+  let misplaced =
+    0;
+
+
+  for (
+    const item of prediction
+  ) {
+
+    const itemName =
+      item.className
+        .toUpperCase();
+
+    const value =
+      item.probability *
+      100;
+
+
+    if (
+      itemName ===
+      "GOOD"
+    ) {
+
+      good =
+        value;
+
+      document.getElementById(
+        "goodValue"
+      ).textContent =
+        value.toFixed(1) +
+        "%";
+
+      document.getElementById(
+        "goodBar"
+      ).style.width =
+        value + "%";
+
+    }
+
+
+    else if (
+      itemName ===
+      "CRACK-GAP"
+    ) {
+
+      crack =
+        value;
+
+      document.getElementById(
+        "crackValue"
+      ).textContent =
+        value.toFixed(1) +
+        "%";
+
+      document.getElementById(
+        "crackBar"
+      ).style.width =
+        value + "%";
+
+    }
+
+
+    else if (
+      itemName ===
+      "MISPLACED"
+    ) {
+
+      misplaced =
+        value;
+
+      document.getElementById(
+        "misplacedValue"
+      ).textContent =
+        value.toFixed(1) +
+        "%";
+
+      document.getElementById(
+        "misplacedBar"
+      ).style.width =
+        value + "%";
+
+    }
+
+  }
+
+
+  // =================================================
+  // SAFETY DECISION
+  // =================================================
+
+  if (
+    name ===
+    "CRACK-GAP"
+    &&
+    crack >= 60
+  ) {
+
+    activateEmergency(
+      "CRACK-GAP",
+      crack
+    );
+
+  }
+
+  else if (
+    name ===
+    "MISPLACED"
+    &&
+    misplaced >= 60
+  ) {
+
+    activateEmergency(
+      "MISPLACED",
+      misplaced
+    );
+
+  }
+
+  else if (
+    name ===
+    "GOOD"
+  ) {
+
+    clearEmergency();
+
+  }
+
+}
+
+
+// =====================================================
+// EMERGENCY ACTIVATION
+// =====================================================
+
+function activateEmergency(
+  type,
+  confidenceValue
+) {
+
+  const now =
+    new Date();
+
+  const time =
+    now.toLocaleTimeString();
+
+  const isNewAlert =
+    currentAlert !== type;
+
+
+  currentAlert =
+    type;
+
+  abnormalState =
+    true;
+
+
+  // ================================================
+  // CRACK / GAP
+  // ================================================
+
+  if (
+    type ===
+    "CRACK-GAP"
+  ) {
+
+    resultName.style.color =
+      "#ff4d4d";
+
+    conditionText.textContent =
+      "🚨 EMERGENCY: CRACK / GAP DETECTED";
+
+    conditionText.style.color =
+      "#ff4d4d";
+
+    emergencyBannerText.textContent =
+      "CRACK / GAP detected • Immediate track inspection required";
+
+    alertTitle.textContent =
+      "🚨 EMERGENCY ALERT";
+
+    alertCondition.textContent =
+      "CRACK / GAP DETECTED";
+
+    alertMessage.textContent =
+      "The AI system has detected a possible crack or gap in the monitored railway track. Immediate safety inspection is recommended.";
+
+  }
+
+
+  // ================================================
+  // MISPLACED
+  // ================================================
+
+  else if (
+    type ===
+    "MISPLACED"
+  ) {
+
+    resultName.style.color =
+      "#ff9f43";
+
+    conditionText.textContent =
+      "⚠️ EMERGENCY: MISPLACED CONDITION";
+
+    conditionText.style.color =
+      "#ff9f43";
+
+    emergencyBannerText.textContent =
+      "MISPLACED railway component detected • Immediate inspection required";
+
+    alertTitle.textContent =
+      "⚠️ SAFETY WARNING";
+
+    alertCondition.textContent =
+      "MISPLACED CONDITION DETECTED";
+
+    alertMessage.textContent =
+      "The AI system has detected a possible misplaced railway component. Immediate inspection is recommended before railway operation.";
+
+  }
+
+
+  emergencyBanner.classList.add(
+    "active"
+  );
+
+
+  systemText.textContent =
+    "⚠ EMERGENCY CONDITION";
+
+  systemDot.style.background =
+    "#ef4444";
+
+
+  // Only create a new popup for a new condition
+  if (isNewAlert) {
+
+    alertAcknowledged =
+      false;
+
+    alertTime.textContent =
+      "Detected at " +
+      time +
+      " • Confidence " +
+      confidenceValue.toFixed(1) +
+      "%";
+
+    alertModal.classList.add(
+      "show"
+    );
+
+    playEmergencySound();
+
+  }
+
+}
+
+
+// =====================================================
+// CLEAR EMERGENCY
+// =====================================================
+
+function clearEmergency() {
+
+  if (!abnormalState)
+    return;
+
+  abnormalState =
+    false;
+
+  currentAlert =
+    "";
+
+  alertAcknowledged =
+    false;
+
+  emergencyBanner.classList.remove(
+    "active"
+  );
+
+  alertModal.classList.remove(
+    "show"
+  );
+
+  resultName.style.color =
+    "#ffffff";
+
+  conditionText.style.color =
+    "#ffffff";
+
+  conditionText.textContent =
+    "✅ TRACK CONDITION NORMAL";
+
+  systemText.textContent =
+    "SYSTEM MONITORING";
+
+  systemDot.style.background =
+    "#22c55e";
+
+}
+
+
+// =====================================================
+// ACKNOWLEDGE ALERT
+// =====================================================
+
+function acknowledgeAlert() {
+
+  alertAcknowledged =
+    true;
+
+  alertModal.classList.remove(
+    "show"
+  );
+
+  log(
+    "Alert acknowledged by operator.\n\n" +
+    "IMPORTANT: Abnormal condition remains active until AI detects GOOD."
+  );
+
+}
+
+
+// =====================================================
+// EMERGENCY SOUND
+// =====================================================
+
+function playEmergencySound() {
+
+  try {
+
+    if (!alertAudioContext) {
+
+      alertAudioContext =
+        new (
+          window.AudioContext ||
+          window.webkitAudioContext
+        )();
+
+    }
+
+    const ctx =
+      alertAudioContext;
+
+    if (
+      ctx.state ===
+      "suspended"
+    ) {
+
+      ctx.resume();
+
+    }
+
+    const oscillator =
+      ctx.createOscillator();
+
+    const gain =
+      ctx.createGain();
+
+    oscillator.type =
+      "square";
+
+    oscillator.frequency.value =
+      900;
+
+    gain.gain.value =
+      0.08;
+
+    oscillator.connect(
+      gain
+    );
+
+    gain.connect(
+      ctx.destination
+    );
+
+    oscillator.start();
+
+    oscillator.stop(
+      ctx.currentTime +
+      0.45
+    );
+
+  }
+
+  catch(error) {
+
+    console.log(
+      "Browser audio unavailable."
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// CONTINUOUS AI
+// =====================================================
+
+async function startAI() {
+
+  if (
+    predictionRunning
+  )
+    return;
+
+  predictionRunning =
+    true;
+
+
+  while (
+    predictionRunning
+  ) {
+
+    if (
+      model &&
+      cameraConnected
+    ) {
+
+      await analyzeFrame();
+
+    }
+
+    // Approximately 1 second
+    // between inspections
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          1000
+        )
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// MANUAL IMAGE TEST
+// =====================================================
+
+document
+  .getElementById(
+    "imageInput"
+  )
+  .addEventListener(
+    "change",
+    async function(event) {
+
+      const file =
+        event.target.files[0];
+
+      if (!file)
+        return;
+
+      if (!model) {
+
+        alert(
+          "AI model is not loaded yet."
+        );
+
+        return;
+
+      }
+
+      const image =
+        new Image();
+
+      const url =
+        URL.createObjectURL(
+          file
+        );
+
+      image.src =
+        url;
+
+      await new Promise(
+        resolve =>
+          image.onload =
+            resolve
+      );
+
+      const prediction =
+        await model.predict(
+          image
+        );
+
+      let best =
+        prediction[0];
+
+      for (
+        let i = 1;
+        i < prediction.length;
+        i++
+      ) {
+
+        if (
+          prediction[i]
+            .probability >
+          best.probability
+        ) {
+
+          best =
+            prediction[i];
+
+        }
+
+      }
+
+      updateResult(
+        prediction,
+        best
+      );
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    }
+  );
+
+
+// =====================================================
+// START SYSTEM
+// =====================================================
+
+window.addEventListener(
+  "load",
+  async function() {
+
+    await loadModel();
+
+    connectCamera();
+
+  }
+);
+
+</script>
+
+</body>
+</html>

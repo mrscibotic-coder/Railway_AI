@@ -1,0 +1,12 @@
+{
+  "name": "railway-ai-inspection",
+  "version": "1.0.0",
+  "description": "Railway AI inspection dashboard with ESP32-CAM cloud bridge",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
